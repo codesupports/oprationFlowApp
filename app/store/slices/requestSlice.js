@@ -5,7 +5,7 @@ export const requestApi = createApi({
     reducerPath: "requestApi",
 
     baseQuery: fetchBaseQuery({
-        baseUrl: "http://localhost:3000",
+        baseUrl: "https://opration-flow-app.vercel.app/",
     }),
 
     tagTypes: ["Requests"],
