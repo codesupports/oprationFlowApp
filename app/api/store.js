@@ -102,3 +102,22 @@ export function deleteRequestById(id) {
 export function addRequest(newRequest) {
     storedRequests.push(newRequest);
 }
+
+// Put
+export function updateRequest(id, updatedData) {
+    const index = storedRequests.findIndex(
+        (request) => request.id === id
+    );
+
+    if (index === -1) {
+        return null;
+    }
+
+    storedRequests[index] = {
+        ...storedRequests[index],
+        ...updatedData,
+        id,
+    };
+
+    return storedRequests[index];
+}

@@ -3,13 +3,16 @@
 import { useState } from "react";
 import { X } from "lucide-react";
 import { deleteRequest, useGetUsersQuery, updateRequest } from "../../store/slices/requestSlice";
-import { useSelector } from "react-redux";
+import { useUpdateRequestMutation } from "../../store/slices/requestSlice";
+import { useSelector, useDispatch } from "react-redux";
+import { useRouter } from 'next/navigation'
 
 
-export default function EditRequest({ request, onClose, onSave }) {
+export default function EditRequest() {
     const requests = useSelector((state) => state.requests);
+    const router = useRouter()
+    const [updateRequest, { isLoading }] = useUpdateRequestMutation();
 
-    console.log('ssddddd', requests.isEditData[0].title)
     const [formData, setFormData] = useState({
         title: requests.isEditData[0]?.title || "",
         category: requests.isEditData[0]?.category || "",
@@ -17,6 +20,7 @@ export default function EditRequest({ request, onClose, onSave }) {
         assignedTo: requests.isEditData[0]?.assignedTo || "",
         status: requests.isEditData[0]?.status || "Pending",
     });
+    const dispatch = useDispatch();
 
     const handleChange = (e) => {
         const { name, value } = e.target;
@@ -26,14 +30,24 @@ export default function EditRequest({ request, onClose, onSave }) {
             [name]: value,
         }));
     };
-
-    const handleSubmit = (e) => {
+    const handleSubmit = async (e) => {
         e.preventDefault();
-
-        onSave({
-            ...request,
-            ...formData,
-        });
+        const request = requests.isEditData?.[0];
+        if (!request) {
+            console.error("No request selected");
+            return;
+        }
+        try {
+            const updatedRequest = {
+                id: request.id,
+                ...formData,
+            };
+            console.log("PUT data:", updatedRequest);
+            await updateRequest(updatedRequest).unwrap();
+            router.back();
+        } catch (error) {
+            console.error("Update failed:", error);
+        }
     };
 
     return (
@@ -43,18 +57,13 @@ export default function EditRequest({ request, onClose, onSave }) {
                 {/* Header */}
                 <div className="flex items-center justify-between border-b border-slate-200 px-6 py-4">
                     <div>
-                        <h2 className="text-lg font-semibold text-slate-900">
-                            Edit Request
-                        </h2>
-
-                        <p className="mt-1 text-xs text-slate-500">
-                            Update request details
-                        </p>
+                        <h2 className="text-lg font-semibold text-slate-900">Edit Request</h2>
+                        <p className="mt-1 text-xs text-slate-500">Update request details</p>
                     </div>
 
                     <button
                         type="button"
-                        onClick={onClose}
+                        onClick={() => router.back()}
                         className="rounded-lg p-2 text-slate-400 hover:bg-slate-100 hover:text-slate-700"
                     >
                         <X size={20} />
@@ -63,7 +72,6 @@ export default function EditRequest({ request, onClose, onSave }) {
 
                 {/* Form */}
                 <form onSubmit={handleSubmit} className="space-y-5 p-6">
-
                     {/* Title */}
                     <div>
                         <label className="mb-1.5 block text-sm font-medium text-slate-700">
@@ -156,7 +164,7 @@ export default function EditRequest({ request, onClose, onSave }) {
                     <div className="flex justify-end gap-3 border-t border-slate-200 pt-5">
                         <button
                             type="button"
-                            onClick={onClose}
+                            onClick={() => router.back()}
                             className="rounded-lg border border-slate-300 px-4 py-2.5 text-sm font-semibold text-slate-700 hover:bg-slate-50"
                         >
                             Cancel
@@ -164,6 +172,7 @@ export default function EditRequest({ request, onClose, onSave }) {
 
                         <button
                             type="submit"
+                            disabled={isLoading}
                             className="rounded-lg bg-blue-600 px-5 py-2.5 text-sm font-semibold text-white hover:bg-blue-700"
                         >
                             Save Changes

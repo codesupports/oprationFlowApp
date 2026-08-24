@@ -4,6 +4,7 @@
 import { ArrowUpRight, MoreHorizontal, } from "lucide-react";
 import { useSelector, useDispatch } from "react-redux";
 import { useGetUsersQuery } from "../../store/slices/requestSlice";
+import { useRouter } from "next/navigation";
 
 
 // const requests = [
@@ -65,6 +66,7 @@ const priorityStyles = {
 export default function RecentRequests() {
   // const requests = useSelector((state) => state.requests.requests);
   const { data, error, isLoading } = useGetUsersQuery();
+  const router = useRouter();
 
   return (
     <div className="overflow-hidden rounded-xl border border-slate-200 bg-white shadow-sm">
@@ -82,7 +84,7 @@ export default function RecentRequests() {
           </p>
         </div>
 
-        <button className="flex items-center gap-1 text-sm font-medium text-blue-600 hover:text-blue-700">
+        <button onClick={() => router.push("/requests")} className="flex items-center gap-1 text-sm font-medium text-blue-600 hover:text-blue-700 cursor-pointer">
           View all
           <ArrowUpRight size={16} />
         </button>

@@ -7,7 +7,7 @@ import { SlidersHorizontal, X, } from "lucide-react";
 
 import RequestTable from "../components/requests/RequestTable";
 import RequestFilters from "../components/requests/RequestFilters";
-import { useGetUsersQuery, useDeleteItemRequestMutation, updateRequest } from "../store/slices/requestSlice";
+import { useGetUsersQuery, useDeleteItemRequestMutation, isEditRequest } from "../store/slices/requestSlice";
 
 export default function RequestsPage() {
     const router = useRouter();
@@ -101,7 +101,7 @@ export default function RequestsPage() {
         const ftData = data?.requests?.filter((request) => {
             return request.id == id
         })
-        dispatch(updateRequest(ftData))
+        dispatch(isEditRequest(ftData))
         console.log('asdasdasdasdasdasdasdasdas')
         router.push(`/requests/edit`);// For Handle Edit
     };

@@ -14,12 +14,12 @@ import { useDispatch } from "react-redux";
 const loginSchema = z.object({
   email: z
     .string()
-    .min(1, "Email address is required")
-    .email("Please enter a valid email address"),
+    .min(1, "Email address is required, use this (test@test.com)")
+    .email("Please enter a valid email address, use this (test@test.com)"),
 
   password: z
     .string()
-    .min(1, "Password is required"),
+    .min(1, "Password is required, use this (123456)"),
 
   rememberMe: z.boolean(),
 });
@@ -44,7 +44,7 @@ const LoginPage = () => {
   const onSubmit = async (data: any) => {
     setLoginError("");
     // Check login credentials
-    if (data.email !== "raj@gmail.com" || data.password !== "123456") {
+    if (data.email !== "test@test.com" || data.password !== "123456") {
       setLoginError("Invalid email or password.");
       return;
     }

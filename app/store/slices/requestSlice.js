@@ -5,7 +5,7 @@ export const requestApi = createApi({
     reducerPath: "requestApi",
 
     baseQuery: fetchBaseQuery({
-        baseUrl: "https://opration-flow-app.vercel.app/",
+        baseUrl: "http://localhost:3000", // https://opration-flow-app.vercel.app/
     }),
 
     tagTypes: ["Requests"],
@@ -23,6 +23,14 @@ export const requestApi = createApi({
             }),
             invalidatesTags: ["Requests"],
         }),
+        updateRequest: builder.mutation({
+            query: ({ id, ...updatedRequest }) => ({
+                url: `/api/users/${id}`,
+                method: "PUT",
+                body: updatedRequest,
+            }),
+            invalidatesTags: ["Requests"],
+        }),
         deleteItemRequest: builder.mutation({
             query: (id) => {
                 console.log("DELETE API ID:", id);
@@ -34,12 +42,17 @@ export const requestApi = createApi({
             },
 
             invalidatesTags: ["Requests"],
-        }),
+        })
 
     })
 });
 
-export const { useGetUsersQuery, useCreateRequestMutation, useDeleteItemRequestMutation } = requestApi;
+export const {
+    useGetUsersQuery,
+    useCreateRequestMutation,
+    useUpdateRequestMutation,
+    useDeleteItemRequestMutation,
+} = requestApi;
 
 const initialState = {
     requests: [],
@@ -64,13 +77,12 @@ const requestSlice = createSlice({
             state.loggedInUser = action.payload;
             localStorage.removeItem("loggedInUser");
         },
-        updateRequest: (state, action) => {
+        isEditRequest: (state, action) => {
             state.isEditData = action.payload
-
-            // const index = state.requests.findIndex((request) => request.id === action.payload.id);
-            // console.log('updateSlice', index)
-            // if (index !== -1) { state.requests[index] = action.payload; }
         },
+        updateRequestData: (state, action) => {
+            console.log('updateRequestData-', action)
+        }
         //     addRequest: (state, action) => {
         //         state.requests.push(action.payload);
         //     },
@@ -120,10 +132,11 @@ const requestSlice = createSlice({
 
 export const {
     //addRequest,
-    updateRequest,
+    isEditRequest,
     // deleteRequest,
     isLoggedInUser,
-    isLoggedOutUser
+    isLoggedOutUser,
+    updateRequestData
 } = requestSlice.actions;
 
 export default requestSlice.reducer;
