@@ -33,6 +33,8 @@ const COLORS = [
   "#0891b2",
   "#059669",
   "#f59e0b",
+  "#a42020",
+  "#daa794"
 ];
 
 const categorieswiseRequests = (requests) => {

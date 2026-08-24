@@ -1,6 +1,4 @@
 
-"use client";
-
 export default function StatCard({
   title,
   value,
@@ -8,13 +6,25 @@ export default function StatCard({
   description,
   icon: Icon,
 }) {
+  const statusStyles = {
+    "Completed": "text-emerald-700",
+    "In Progress": "text-blue-700",
+    "Pending": "text-amber-700",
+    "Total Requests": "text-black-700",
+  };
+  const bgStyles = {
+    "Completed": "bg-emerald-50",
+    "In Progress": "bg-blue-50",
+    "Pending": "bg-amber-50",
+    "Total Requests": "bg-white",
+  };
   return (
-    <div className="rounded-xl border border-slate-200 bg-white p-5 shadow-sm transition hover:shadow-md">
+    <div className={`rounded-xl border border-slate-300 p-5 shadow-sm transition hover:shadow-md ${bgStyles[title]}`}>
 
       <div className="flex items-start justify-between">
 
         <div>
-          <p className="text-sm font-medium text-slate-500">
+          <p className={`text-sm font-bold  ${statusStyles[title]}`}>
             {title}
           </p>
 
@@ -23,8 +33,8 @@ export default function StatCard({
           </p>
         </div>
 
-        <div className="rounded-lg bg-blue-50 p-3 text-blue-600">
-          <Icon size={21} />
+        <div className={`rounded-lg ${statusStyles[title]}`}>
+          <Icon size={30} />
         </div>
 
       </div>

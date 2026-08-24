@@ -37,7 +37,7 @@ const menuItems = [
     {
         label: "Users",
         icon: Users,
-        href: "",
+        href: "/allUser",
     },
     {
         label: "Reports",

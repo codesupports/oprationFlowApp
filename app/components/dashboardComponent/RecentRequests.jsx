@@ -53,14 +53,14 @@ const statusStyles = {
 };
 
 const priorityStyles = {
-  "High": "text-red-600",
-  "high": "text-red-600",
-  "Medium": "text-amber-600",
-  "medium": "text-amber-600",
-  "Low": "text-green-500",
-  "low": "text-green-500",
-  "critical": "text-red-600 font-bold",
-  "Critical": "text-red-700 font-bold",
+  "High": "text-red-600 px-2.5 py-1 bg-red-600/5 rounded-full",
+  "high": "text-red-600 px-2.5 py-1 bg-red-600/5 rounded-full",
+  "Medium": "text-amber-600 px-2.5 py-1 bg-amber-600/5 rounded-full",
+  "medium": "text-amber-600 px-2.5 py-1 bg-amber-600/5 rounded-full",
+  "Low": "text-green-500 px-2.5 py-1 bg-green-600/5 rounded-full",
+  "low": "text-green-500 px-2.5 py-1 bg-green-600/5 rounded-full",
+  "critical": "text-red-600 font-bold  px-2.5 py-1 bg-red-600/5 rounded-full",
+  "Critical": "text-red-700 font-bold  px-2.5 py-1 bg-red-600/5 rounded-full",
 };
 
 export default function RecentRequests() {
@@ -137,7 +137,10 @@ export default function RecentRequests() {
                   <p className="mt-0.5 text-xs text-slate-500">{request.title}</p>
                 </td>
                 <td className="px-5 py-2 text-sm text-slate-600 capitalize">{request.category}</td>
-                <td className={`px-5 py-2 text-sm font-semibold capitalize ${priorityStyles[request.priority]}`}>{request.priority}</td>
+                <td className={`px-5 py-2 text-sm font-semibold capitalize`}>
+                  <span className={`rounded-full px-2.5 py-1 text-xs font-semibold ${priorityStyles[request.priority]}`}>
+                    {request.priority}
+                  </span></td>
                 <td className="px-5 py-2 text-sm text-slate-600">{request.assignedTo}</td>
                 <td className="px-5 py-2">
                   <span className={`rounded-full px-2.5 py-1 text-xs font-semibold ${statusStyles[request.status]}`}>
