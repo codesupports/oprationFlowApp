@@ -10,7 +10,7 @@ export async function GET() {
     });
 }
 
-// Post a new user
+// Post a new Request
 export async function POST(request) {
     try {
         const body = await request.json();
@@ -37,6 +37,36 @@ export async function POST(request) {
             success: true,
             message: "Request created successfully",
             data: newRequest,
+        }, { status: 201 });
+    }
+    catch (error) {
+        console.error("POST error:", error);
+        return NextResponse.json({
+            success: false,
+            message: "Error creating request",
+            error: error.message,
+        }, { status: 500 });
+    }
+
+
+    try {
+        const body = await request.json();
+        const newUserRequest = {
+            id: `USR-${Date.now()}`,
+            name: body.name,
+            email: body.email,
+            role: body.role,
+            department: body.department,
+            status: body.status
+        };
+
+        // Store in shared store
+        addRequest(newUserRequest);
+
+        return NextResponse.json({
+            success: true,
+            message: "New User Request created successfully",
+            data: newUserRequest,
         }, { status: 201 });
     }
     catch (error) {
@@ -96,3 +126,8 @@ export async function PUT(request) {
         );
     }
 }
+
+// // POST New User
+// export async function POST(request) {
+    
+// }

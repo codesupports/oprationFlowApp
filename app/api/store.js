@@ -90,6 +90,18 @@ export let storedRequests = [
     }
 ];
 
+export const storedUsers = [
+    {
+        id: "USR-001",
+        name: "Raj Kumar",
+        email: "raj@example.com",
+        role: "Admin",
+        department: "IT",
+        status: "Active",
+    },
+];
+
+// DELETE
 export function deleteRequestById(id) {
     const index = storedRequests.findIndex(req => req.id === id);
     if (index !== -1) {
@@ -120,4 +132,9 @@ export function updateRequest(id, updatedData) {
     };
 
     return storedRequests[index];
+}
+
+// ADD NEW USER
+export const addUser = (user) => {
+    storedUsers.push(user)
 }

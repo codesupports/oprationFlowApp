@@ -8,6 +8,7 @@ import { store } from "../../store/store";
 import Sidebar from "../dashboardComponent/Sidebar";
 import { isLoggedInUser, isLoggedOutUser } from "../../store/slices/requestSlice";
 import AuthActivity from '../../AuthActivity/authActivity'
+import Loader from '../Loader'
 
 function AppContent({ children }) {
     const dispatch = useDispatch();
@@ -39,7 +40,7 @@ function AppContent({ children }) {
     }, [loggedInUser, pathname, router]);
 
     if (loggedInUser === null) {
-        return <div>Loading...</div>;
+        return <div><Loader /></div>;
     }
 
     if (!loggedInUser && pathname !== "/login") {

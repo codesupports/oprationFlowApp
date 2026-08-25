@@ -48,10 +48,7 @@ export default function Header() {
     return (
         <header className="sticky top-0 z-40 flex h-20 items-center justify-between border-b border-slate-200 bg-white px-4 sm:px-6 lg:px-8">
 
-            {/* Mobile Menu */}
-            <button className="rounded-lg p-2 text-slate-600 hover:bg-slate-100 lg:hidden">
-                <Menu size={22} />
-            </button>
+
 
             {/* Search */}
             <div className="relative hidden w-full max-w-md md:block">
@@ -118,7 +115,7 @@ export default function Header() {
                             <div className="absolute right-0 top-full z-50 mt-2 w-48 rounded-lg border border-slate-200 bg-white py-1 shadow-lg">
                                 <button
                                     type="button"
-                                    onClick={()=> router.push("/allUser")}
+                                    onClick={() => router.push("/allUser")}
                                     className="flex w-full items-center gap-3 px-4 py-2.5 text-sm text-red-600 hover:bg-red-50"
                                 >
                                     <User size={17} />
