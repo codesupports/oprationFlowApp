@@ -99,7 +99,7 @@ export default function Sidebar({ onClose }) {
                 <Menu size={22} />
             </button>
             {toggleHmburger && <div class="absolute inset-0 bg-black/50 z-50" onClick={toggleMobileMenu} />}
-            <aside className={`fixed inset-y-0 md:left-0 z-50 flex w-64 flex-col bg-slate-900 text-white ${toggleHmburger ? "left-0" : "left-[-300px]"}`}>
+            <aside className={`fixed inset-y-0 md:left-0 z-50 flex w-64 flex-col bg-slate-900 text-white ${toggleHmburger ? "left-0" : "-left-75"}`}>
 
                 {/* Logo */}
                 <div className="flex h-20 items-center justify-between border-b border-slate-800 px-6">
