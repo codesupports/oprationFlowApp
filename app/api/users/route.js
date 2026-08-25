@@ -1,5 +1,5 @@
 import { NextResponse } from "next/server";
-import { storedRequests, addRequest } from "../store";
+import { storedRequests, addRequest, updateRequest } from "../store";
 
 // Get all users
 export async function GET() {
@@ -127,7 +127,3 @@ export async function PUT(request) {
     }
 }
 
-// // POST New User
-// export async function POST(request) {
-    
-// }

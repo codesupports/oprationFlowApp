@@ -4,9 +4,7 @@ import { useState } from "react";
 import { X } from "lucide-react";
 import { useRouter } from "next/navigation";
 
-import {
-    useCreateUserMutation,
-} from "../../store/slices/requestSlice";
+import { useCreateUserMutation, } from "../store/slices/requestSlice";
 
 export default function AddUser() {
     const router = useRouter();
