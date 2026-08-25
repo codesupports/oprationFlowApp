@@ -1,39 +1,58 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Opration Flow
 
-## Getting Started
+Opration Flow is a modern web application designed to simplify and manage operational workflows through a centralized and easy-to-use interface.
 
-First, run the development server:
+## 🚀 Live Demo
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
-```
+[Visit Opration Flow](https://opration-flow-app.vercel.app/login)
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+---
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+## 📌 Overview
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+Opration Flow provides a centralized platform for managing day-to-day operations, organizing workflows, and improving productivity.
 
-## Learn More
+The application is designed with a clean and responsive interface to make operational processes easier to track, manage, and execute.
 
-To learn more about Next.js, take a look at the following resources:
+---
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+## ✨ Features
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+- 🔐 Secure user authentication
+- 📊 Centralized operational dashboard
+- ⚡ Workflow and task management
+- 🗂️ Organized data and operational information
+- 📱 Responsive and user-friendly interface
+- 🎨 Modern and clean UI
+- 🚀 Fast and optimized web experience
+- ☁️ Deployed on Vercel
 
-## Deploy on Vercel
+---
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+## 🛠️ Tech Stack
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+The project is built using modern web technologies.
 
-## TechStack
-ReactJs, Best Archtechure, React Hook Forms, 
+- **Frontend:** React / Next.js
+- **Language:** TypeScript / JavaScript
+- **Styling:** CSS / Tailwind CSS
+- **Deployment:** Vercel
+- **Version Control:** Git & GitHub
+
+> Update the technologies above according to the exact stack used in the project.
+
+---
+
+## 📂 Project Structure
+
+```text
+opration-flow/
+│
+├── app/                 # Application routes and pages
+├── components/         # Reusable UI components
+├── public/              # Static assets
+├── lib/                 # Utilities and helper functions
+├── styles/              # Global styles
+├── .env.local           # Local environment variables
+├── package.json          # Project dependencies and scripts
+└── README.md             # Project documentation
