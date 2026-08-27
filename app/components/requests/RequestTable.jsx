@@ -42,7 +42,6 @@ export default function RequestTable({
       </div>
     );
   }
-  // console.log('requestsadadadadasdasda', requests)
   return (
     <>
       {/* =================================================
@@ -66,7 +65,6 @@ export default function RequestTable({
             </thead>
 
             {/* Table Body */}
-
             <tbody className="divide-y divide-slate-100">
               {requests.map((request) => (
                 <tr key={request.id} className="transition hover:bg-slate-50">
@@ -77,25 +75,14 @@ export default function RequestTable({
                       onClick={() => onView(request.id)}
                       className="text-sm font-semibold text-blue-600 hover:text-blue-700 hover:underline"
                     >{request.id}</button>
-
                     <p className="mt-1 max-w-[220px] truncate text-xs text-slate-500">{request.title}</p>
                   </td>
-
-                  {/* Category */}
                   <td className="px-5 py-4 text-sm text-slate-600">{request.category}</td>
-
-                  {/* Priority */}
                   <td className="px-5 py-4">
                     <span className={`text-sm font-semibold capitalize ${priorityStyles[request.priority] || "text-slate-500"}`}>{request.priority}</span>
                   </td>
-
-                  {/* Assigned */}
                   <td className="px-5 py-4 text-sm text-slate-600">{request.assignedTo}</td>
-
-                  {/* Status */}
-
                   <td className="px-5 py-4"><RequestStatus status={request.status} /></td>
-                  {/* Date */}
                   <td className="whitespace-nowrap px-5 py-4 text-sm text-slate-500">{request.date}</td>
                   {/* Actions */}
                   <td className="px-5 py-4">
@@ -109,9 +96,7 @@ export default function RequestTable({
                       >
                         <Eye size={17} />
                       </button>
-
                       {/* Edit */}
-
                       <button
                         disabled={request.status === "Completed" || request.status === "In Progress"}
                         type="button"
@@ -121,9 +106,7 @@ export default function RequestTable({
                       >
                         <Pencil size={17} />
                       </button>
-
                       {/* Delete */}
-
                       <button
                         disabled={request.status === "Completed"}
                         type="button"
@@ -133,124 +116,64 @@ export default function RequestTable({
                       >
                         <Trash2 size={17} />
                       </button>
-
                     </div>
-
                   </td>
-
                 </tr>
-
               ))}
-
             </tbody>
-
           </table>
-
         </div>
-
       </div>
-
       {/* =================================================
           Mobile Cards
       ================================================= */}
-
       <div className="space-y-3 md:hidden">
-
         {requests.map((request) => (
-
-          <div
-            key={request.id}
-            className="rounded-xl border border-slate-200 bg-white p-4 shadow-sm"
-          >
-
+          <div key={request.id} className="rounded-xl border border-slate-200 bg-white p-4 shadow-sm">
             {/* Top */}
-
             <div className="flex items-start justify-between gap-3">
-
               <div className="min-w-0">
-
                 <button
                   type="button"
-                  onClick={() =>
-                    onView(request.id)
-                  }
+                  onClick={() => onView(request.id)}
                   className="text-sm font-semibold text-blue-600"
                 >
                   {request.id}
                 </button>
-
-                <h3 className="mt-1 truncate text-sm font-semibold text-slate-800">
-                  {request.title}
-                </h3>
-
+                <h3 className="mt-1 truncate text-sm font-semibold text-slate-800">{request.title}</h3>
               </div>
-
               <RequestStatus
                 status={request.status}
               />
-
             </div>
 
             {/* Details */}
-
             <div className="mt-4 grid grid-cols-2 gap-4">
-
               <div>
-                <p className="text-xs text-slate-400">
-                  Category
-                </p>
-
-                <p className="mt-1 text-sm font-medium text-slate-700">
-                  {request.category}
-                </p>
+                <p className="text-xs text-slate-400">Category</p>
+                <p className="mt-1 text-sm font-medium text-slate-700">{request.category}</p>
               </div>
-
               <div>
-                <p className="text-xs text-slate-400">
-                  Priority
-                </p>
-
-                <p
-                  className={`mt-1 text-sm font-semibold ${priorityStyles[
-                    request.priority
-                  ] || "text-slate-500"
-                    }`}
-                >
+                <p className="text-xs text-slate-400">Priority</p>
+                <p className={`mt-1 text-sm font-semibold ${priorityStyles[request.priority] || "text-slate-500"}`}>
                   {request.priority}
                 </p>
               </div>
 
               <div>
-                <p className="text-xs text-slate-400">
-                  Assigned To
-                </p>
-
-                <p className="mt-1 text-sm font-medium text-slate-700">
-                  {request.assignedTo}
-                </p>
+                <p className="text-xs text-slate-400">Assigned To</p>
+                <p className="mt-1 text-sm font-medium text-slate-700">{request.assignedTo}</p>
               </div>
-
               <div>
-                <p className="text-xs text-slate-400">
-                  Date
-                </p>
-
-                <p className="mt-1 text-sm font-medium text-slate-700">
-                  {request.date}
-                </p>
+                <p className="text-xs text-slate-400">Date</p>
+                <p className="mt-1 text-sm font-medium text-slate-700">{request.date}</p>
               </div>
-
             </div>
-
             {/* Actions */}
-
             <div className="mt-4 flex gap-2 border-t border-slate-100 pt-3">
-
               <button
                 type="button"
-                onClick={() =>
-                  onView(request.id)
-                }
+                onClick={() => onView(request.id)}
                 className="flex flex-1 items-center justify-center gap-2 rounded-lg border border-slate-200 px-3 py-2 text-xs font-semibold text-slate-600 hover:bg-slate-50"
               >
                 <Eye size={15} />
@@ -259,9 +182,7 @@ export default function RequestTable({
 
               <button
                 type="button"
-                onClick={() =>
-                  onEdit(request.id)
-                }
+                onClick={() => onEdit(request.id)}
                 className="flex flex-1 items-center justify-center gap-2 rounded-lg border border-slate-200 px-3 py-2 text-xs font-semibold text-slate-600 hover:bg-slate-50"
               >
                 <Pencil size={15} />
@@ -270,21 +191,15 @@ export default function RequestTable({
 
               <button
                 type="button"
-                onClick={() =>
-                  onDelete(request.id)
-                }
+                onClick={() => onDelete(request.id)}
                 className="flex flex-1 items-center justify-center gap-2 rounded-lg border border-red-100 px-3 py-2 text-xs font-semibold text-red-600 hover:bg-red-50"
               >
                 <Trash2 size={15} />
                 Delete
               </button>
-
             </div>
-
           </div>
-
         ))}
-
       </div>
     </>
   );

@@ -7,7 +7,6 @@ import { useForm } from "react-hook-form";
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { ArrowLeft, Loader2, Paperclip, X, } from "lucide-react";
-
 import { useCreateRequestMutation } from "../../store/slices/requestSlice";
 
 /* Validation Schema */
@@ -112,7 +111,6 @@ const userOptions = [
 export default function RequestForm() {
   const router = useRouter();
   const [createRequest] = useCreateRequestMutation();
-
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [error, setError] = useState(null);
   const [files, setFiles] = useState([]);
@@ -162,7 +160,7 @@ export default function RequestForm() {
       setIsSubmitting(true);
       setError(null);
 
-      const newRequest = await createRequest({
+      await createRequest({
         id: `REQ-${Math.floor(Math.random() * 10000)}`,
         title: data.title,
         category: data.category,
@@ -180,12 +178,6 @@ export default function RequestForm() {
         }),
       }).unwrap();
 
-      // console.log("New Request:", newRequest);
-
-      // API call with RTK Query mutation - this automatically updates cache
-      // console.log("API Response:", newRequest);
-
-      // Request list par redirect
       router.push("/requests");
 
     } catch (error) {

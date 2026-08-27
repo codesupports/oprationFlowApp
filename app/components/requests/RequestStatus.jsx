@@ -1,7 +1,5 @@
 
-export default function RequestStatus({
-    status,
-}) {
+export default function RequestStatus({ status }) {
     const styles = {
         Open: {
             badge: "bg-slate-100 text-slate-700",
@@ -29,18 +27,11 @@ export default function RequestStatus({
         },
     };
 
-    const currentStyle =
-        styles[status] || styles.Open;
+    const currentStyle = styles[status] || styles.Open;
 
     return (
-        <span
-            className={`inline-flex items-center gap-1.5 rounded-full px-2.5 py-1 text-xs font-semibold ${currentStyle.badge}`}
-        >
-            <span
-                className={`h-1.5 w-1.5 rounded-full ${currentStyle.dot}`}
-            />
-
-            {status}
+        <span className={`inline-flex items-center gap-1.5 rounded-full px-2.5 py-1 text-xs font-semibold ${currentStyle.badge}`}>
+            <span className={`h-1.5 w-1.5 rounded-full ${currentStyle.dot}`} />{status}
         </span>
     );
 }

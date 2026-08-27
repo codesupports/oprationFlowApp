@@ -2,7 +2,6 @@
 
 import { useState } from "react";
 import { X } from "lucide-react";
-import { deleteRequest, useGetUsersQuery, updateRequest } from "../../store/slices/requestSlice";
 import { useUpdateRequestMutation } from "../../store/slices/requestSlice";
 import { useSelector, useDispatch } from "react-redux";
 import { useRouter } from 'next/navigation'

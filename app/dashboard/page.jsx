@@ -6,12 +6,12 @@ import StatCard from "../components/dashboardComponent/StatCard";
 import RequestTrend from "../components/dashboardComponent/RequestTrend";
 import CategoryChart from "../components/dashboardComponent/CategoryChart";
 import RecentRequests from "../components/dashboardComponent/RecentRequests";
-import { useGetUsersQuery } from "../store/slices/requestSlice";
-
+import { useGetRecentRequestQuery } from "../store/slices/requestSlice";
+import { getLoggedInUserInformation } from '../utils/helpers'
 import { ClipboardList, Clock3, LoaderCircle, CheckCircle2, } from "lucide-react";
 
 export default function DashboardPage() {
-    const { data } = useGetUsersQuery(undefined);
+    const { data } = useGetRecentRequestQuery(undefined);
     const requests = Array.isArray(data?.requests) ? data.requests : [];
 
     const totalRequests = requests.length;
@@ -62,19 +62,15 @@ export default function DashboardPage() {
         },
     ];
 
-
     return (
         <div className="flex min-h-screen bg-slate-50">
-            {/* Sidebar */}
-
             {/* Main Content */}
             <div className="flex min-w-0 flex-1 flex-col lg:ml-64">
                 <Header />
                 <main className="flex-1 p-4 sm:p-6 lg:p-8">
                     {/* Page Header */}
                     <div className="mb-8">
-                        <h1 className="text-2xl font-bold tracking-tight text-slate-900">Welcome back, Raj!</h1>
-
+                        <h1 className="text-2xl font-bold tracking-tight text-slate-900">Welcome back, <span className="capitalize">{getLoggedInUserInformation().name}</span> !</h1>
                         <p className="mt-1 text-sm text-slate-500">Here&apos;s what&apos;s happening with your service requests today.</p>
                     </div>
 
@@ -101,102 +97,3 @@ export default function DashboardPage() {
         </div>
     );
 }
-
-// "use client";
-
-// import Header from "../components/dashboard/Header";
-// import StatCard from "../components/dashboard/StatCard";
-// import RequestTrend from "../components/dashboard/RequestTrend";
-// import CategoryChart from "../components/dashboard/CategoryChart";
-// import RecentRequests from "../components/dashboard/RecentRequests";
-// import Sidebar from "../components/dashboard/Sidebar";
-// import { useGetUsersQuery } from "../store/slices/requestSlice";
-
-// import { ClipboardList, Clock3, CheckCircle2 } from "lucide-react";
-
-// export default function DashboardPage() {
-//     const { data } = useGetUsersQuery(undefined);
-//     const requests = Array.isArray(data?.requests) ? data.requests : [];
-
-//     const totalRequests = requests.length;
-
-//     const pendingRequests = requests.filter((request) => {
-//         const status = String(request?.status ?? "").toLowerCase();
-//         return status === "pending" || status === "new" || status === "submitted";
-//     }).length;
-
-//     const inProgressRequests = requests.filter((request) => {
-//         const status = String(request?.status ?? "").toLowerCase().replace(/\s+/g, "-");
-//         return status === "in-progress" || status === "in_progress";
-//     }).length;
-
-//     const completedRequests = requests.filter((request) => {
-//         const status = String(request?.status ?? "").toLowerCase();
-//         return status === "completed" || status === "closed";
-//     }).length;
-
-//     const stats = [
-//         {
-//             title: "Total Requests",
-//             value: totalRequests,
-//             icon: ClipboardList,
-//             color: "blue",
-//         },
-//         {
-//             title: "Pending",
-//             value: pendingRequests,
-//             icon: Clock3,
-//             color: "yellow",
-//         },
-//         {
-//             title: "In Progress",
-//             value: inProgressRequests,
-//             icon: Clock3,
-//             color: "purple",
-//         },
-//         {
-//             title: "Completed",
-//             value: completedRequests,
-//             icon: CheckCircle2,
-//             color: "green",
-//         },
-//     ];
-
-//     return (
-//         <div className="flex min-h-screen bg-slate-50">
-//             <Sidebar />
-//             <div className="flex min-w-0 flex-1 flex-col lg:ml-64">
-//                 <Header />
-//                 <main className="flex-1 p-4 sm:p-6 lg:p-8">
-//                     <div className="mb-8">
-//                         <h1 className="text-2xl font-bold tracking-tight text-slate-900">
-//                             Welcome back!
-//                         </h1>
-//                         <p className="mt-1 text-sm text-slate-500">
-//                             Here&apos;s what&apos;s happening with your service requests today.
-//                         </p>
-//                     </div>
-
-//                     <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 xl:grid-cols-4">
-//                         {stats.map((stat) => (
-//                             <StatCard key={stat.title} {...stat} />
-//                         ))}
-//                     </div>
-
-//                     <div className="mt-6 grid grid-cols-1 gap-6 xl:grid-cols-3">
-//                         <div className="xl:col-span-2">
-//                             <RequestTrend />
-//                         </div>
-//                         <div>
-//                             <CategoryChart />
-//                         </div>
-//                     </div>
-
-//                     <div className="mt-6">
-//                         <RecentRequests />
-//                     </div>
-//                 </main>
-//             </div>
-//         </div>
-//     );
-// }

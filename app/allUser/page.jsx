@@ -9,66 +9,30 @@ import {
     MoreVertical,
 } from "lucide-react";
 import { useRouter } from "next/navigation";
-
-const initialUsers = [
-    {
-        id: "USR-001",
-        name: "Raj Kumar",
-        email: "raj.kumar@example.com",
-        role: "Admin",
-        department: "IT",
-        status: "Active",
-    },
-    {
-        id: "USR-002",
-        name: "Simran Sharma",
-        email: "simran.sharma@example.com",
-        role: "Manager",
-        department: "Operations",
-        status: "Active",
-    },
-    {
-        id: "USR-003",
-        name: "Kartik Singh",
-        email: "kartik.singh@example.com",
-        role: "User",
-        department: "IT",
-        status: "Active",
-    },
-    {
-        id: "USR-004",
-        name: "Priya Verma",
-        email: "priya.verma@example.com",
-        role: "User",
-        department: "Finance",
-        status: "Inactive",
-    },
-];
+import { useGetAllUsersQuery, useDeleteUserMutation } from "../store/slices/requestSlice";
+import { getInitials } from '../utils/helpers'
 
 export default function UserList() {
     const router = useRouter();
-
-    const [users, setUsers] = useState(initialUsers);
     const [search, setSearch] = useState("");
     const [roleFilter, setRoleFilter] = useState("All");
     const [statusFilter, setStatusFilter] = useState("All");
 
+    const { data, error, isLoading } = useGetAllUsersQuery();
+    const [deleteUser, { isLoading: isDeleting }] = useDeleteUserMutation();
+
+    const displayedUsers = data?.users ?? []
+
     const filteredUsers = useMemo(() => {
-        return users.filter((user) => {
+        return displayedUsers.filter((user) => {
             const searchValue = search.toLowerCase();
 
-            const matchesSearch =
-                user.name.toLowerCase().includes(searchValue) ||
+            const matchesSearch = user.name.toLowerCase().includes(searchValue) ||
                 user.email.toLowerCase().includes(searchValue) ||
                 user.department.toLowerCase().includes(searchValue);
 
-            const matchesRole =
-                roleFilter === "All" ||
-                user.role === roleFilter;
-
-            const matchesStatus =
-                statusFilter === "All" ||
-                user.status === statusFilter;
+            const matchesRole = roleFilter === "All" || user.role === roleFilter;
+            const matchesStatus = statusFilter === "All" || user.status === statusFilter;
 
             return (
                 matchesSearch &&
@@ -76,19 +40,28 @@ export default function UserList() {
                 matchesStatus
             );
         });
-    }, [users, search, roleFilter, statusFilter]);
+    }, [displayedUsers, search, roleFilter, statusFilter]);
 
-    const handleDelete = (id) => {
-        const confirmed = window.confirm(
-            "Are you sure you want to delete this user?"
-        );
+    const loggedUser = JSON.parse(localStorage.getItem("loggedInUser") || "{}");
 
-        if (!confirmed) return;
+    const handleDelete = async (id) => {
 
-        setUsers((prev) =>
-            prev.filter((user) => user.id !== id)
-        );
+        if (loggedUser.id == id) {
+            window.confirm("You cannot delete your own account while logged in. Please contact an administrator if you need to delete this account.");
+        } else {
+            const confirmed = window.confirm("Are you sure you want to delete this user?");
+
+            if (!confirmed) return;
+            try {
+                await deleteUser(id).unwrap();
+
+                console.log("User deleted successfully");
+            } catch (error) {
+                console.error("Delete failed", error);
+            }
+        }
     };
+
 
     const handleEdit = (user) => {
         console.log("Edit user:", user);
@@ -98,14 +71,6 @@ export default function UserList() {
         // router.push(`/users/${user.id}/edit`);
     };
 
-    const getInitials = (name) => {
-        return name
-            .split(" ")
-            .map((word) => word[0])
-            .join("")
-            .slice(0, 2)
-            .toUpperCase();
-    };
 
     return (
         <main className="flex min-h-screen bg-slate-50">
@@ -113,15 +78,9 @@ export default function UserList() {
 
                 {/* Header */}
                 <div className="mb-6 flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
-
                     <div>
-                        <h1 className="text-2xl font-bold text-slate-900">
-                            Users
-                        </h1>
-
-                        <p className="mt-1 text-sm text-slate-500">
-                            Manage users and their permissions
-                        </p>
+                        <h1 className="text-2xl font-bold text-slate-900">Users</h1>
+                        <p className="mt-1 text-sm text-slate-500">Manage users and their permissions</p>
                     </div>
 
                     <button
@@ -138,14 +97,12 @@ export default function UserList() {
                 <div className="mb-5 rounded-xl border border-slate-200 bg-white p-4 shadow-sm">
 
                     <div className="flex flex-col gap-3 lg:flex-row">
-
                         {/* Search */}
                         <div className="relative flex-1">
                             <Search
                                 size={18}
                                 className="absolute left-3 top-1/2 -translate-y-1/2 text-slate-400"
                             />
-
                             <input
                                 type="search"
                                 value={search}
@@ -189,14 +146,8 @@ export default function UserList() {
                 {/* User Count */}
                 <div className="mb-3 text-sm text-slate-500">
                     Showing{" "}
-                    <span className="font-semibold text-slate-700">
-                        {filteredUsers.length}
-                    </span>{" "}
-                    of{" "}
-                    <span className="font-semibold text-slate-700">
-                        {users.length}
-                    </span>{" "}
-                    users
+                    <span className="font-semibold text-slate-700">{filteredUsers.length}</span>{" "} of{" "}
+                    <span className="font-semibold text-slate-700">{displayedUsers.length}</span>{" "} users
                 </div>
 
                 {/* Table */}
@@ -308,32 +259,20 @@ export default function UserList() {
 
                                                     <button
                                                         type="button"
-                                                        onClick={() =>
-                                                            handleEdit(
-                                                                user
-                                                            )
-                                                        }
+                                                        onClick={() => handleEdit(user)}
                                                         className="rounded-lg p-2 text-slate-500 hover:bg-blue-50 hover:text-blue-600"
                                                         title="Edit user"
                                                     >
-                                                        <Pencil
-                                                            size={17}
-                                                        />
+                                                        <Pencil size={17} />
                                                     </button>
 
                                                     <button
                                                         type="button"
-                                                        onClick={() =>
-                                                            handleDelete(
-                                                                user.id
-                                                            )
-                                                        }
+                                                        onClick={() => handleDelete(user.id)}
                                                         className="rounded-lg p-2 text-slate-500 hover:bg-red-50 hover:text-red-600"
                                                         title="Delete user"
                                                     >
-                                                        <Trash2
-                                                            size={17}
-                                                        />
+                                                        <Trash2 size={17} />
                                                     </button>
 
                                                     <button
@@ -341,9 +280,7 @@ export default function UserList() {
                                                         className="rounded-lg p-2 text-slate-500 hover:bg-slate-100 hover:text-slate-700"
                                                         title="More"
                                                     >
-                                                        <MoreVertical
-                                                            size={17}
-                                                        />
+                                                        <MoreVertical size={17} />
                                                     </button>
 
                                                 </div>

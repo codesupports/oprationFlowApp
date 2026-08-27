@@ -5,13 +5,13 @@ export const requestApi = createApi({
     reducerPath: "requestApi",
 
     baseQuery: fetchBaseQuery({
-        baseUrl: " https://opration-flow-app.vercel.app/", // https://opration-flow-app.vercel.app/
+        baseUrl: "http://localhost:3000", // https://opration-flow-app.vercel.app/
     }),
 
-    tagTypes: ["Requests"],
+    tagTypes: ["Requests", "Users",],
 
     endpoints: (builder) => ({
-        getUsers: builder.query({
+        getRecentRequest: builder.query({
             query: () => "/api/users",
             providesTags: ["Requests"],
         }),
@@ -42,16 +42,39 @@ export const requestApi = createApi({
             },
 
             invalidatesTags: ["Requests"],
-        })
-
+        }),
+        createUser: builder.mutation({ // CREATE NEW USER
+            query: (newUser) => ({
+                url: "/api/allusers",
+                method: "POST",
+                body: newUser,
+            }),
+            invalidatesTags: ["Users"],
+        }),
+        getAllUsers: builder.query({
+            query: () => "/api/allusers",
+            providesTags: ["Users"],
+        }),
+        deleteUser: builder.mutation({
+            query: (id) => {
+                return {
+                    url: `/api/allusers/${id}`,
+                    method: "DELETE",
+                };
+            },
+            invalidatesTags: ["Users"],
+        }),
     })
 });
 
 export const {
-    useGetUsersQuery,
+    useGetRecentRequestQuery,
     useCreateRequestMutation,
     useUpdateRequestMutation,
     useDeleteItemRequestMutation,
+    useCreateUserMutation,
+    useGetAllUsersQuery,
+    useDeleteUserMutation
 } = requestApi;
 
 const initialState = {
@@ -106,14 +129,14 @@ const requestSlice = createSlice({
     extraReducers: (builder) => {
         builder
             .addMatcher(
-                requestApi.endpoints.getUsers.matchPending,
+                requestApi.endpoints.getRecentRequest.matchPending,
                 (state) => {
                     state.loading = true;
                     state.error = null;
                 }
             )
             .addMatcher(
-                requestApi.endpoints.getUsers.matchFulfilled,
+                requestApi.endpoints.getRecentRequest.matchFulfilled,
                 (state, action) => {
                     state.loading = false;
                     // API ka data Redux state mein
@@ -121,7 +144,7 @@ const requestSlice = createSlice({
                 }
             )
             .addMatcher(
-                requestApi.endpoints.getUsers.matchRejected,
+                requestApi.endpoints.getRecentRequest.matchRejected,
                 (state, action) => {
                     state.loading = false;
                     state.error = action.error?.message;

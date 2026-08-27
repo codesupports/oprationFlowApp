@@ -90,7 +90,7 @@ export let storedRequests = [
     }
 ];
 
-export const storedUsers = [
+export const appUsers = [
     {
         id: "USR-001",
         name: "Raj Kumar",
@@ -98,6 +98,30 @@ export const storedUsers = [
         role: "Admin",
         department: "IT",
         status: "Active",
+    },
+    {
+        id: "USR-002",
+        name: "Ravi Maurya",
+        email: "ravi@example.com",
+        role: "User",
+        department: "IT",
+        status: "Active",
+    },
+    {
+        id: "USR-003",
+        name: "Orchid Jon",
+        email: "orchid@example.com",
+        role: "Manager",
+        department: "Operation",
+        status: "Active",
+    },
+    {
+        id: "USR-004",
+        name: "Manish Mishra",
+        email: "manish@example.com",
+        role: "User",
+        department: "Operation",
+        status: "Inactive",
     },
 ];
 
@@ -117,24 +141,28 @@ export function addRequest(newRequest) {
 
 // Put
 export function updateRequest(id, updatedData) {
-    const index = storedRequests.findIndex(
-        (request) => request.id === id
-    );
+    const index = storedRequests.findIndex((request) => request.id === id);
 
-    if (index === -1) {
-        return null;
-    }
+    if (index === -1) { return null; }
 
-    storedRequests[index] = {
-        ...storedRequests[index],
-        ...updatedData,
-        id,
-    };
+    storedRequests[index] = { ...storedRequests[index], ...updatedData, id, };
 
     return storedRequests[index];
 }
 
 // ADD NEW USER
 export const addUser = (user) => {
-    storedUsers.push(user)
+    console.log('store file - addUser function', user)
+    appUsers.push(user)
+}
+
+export function deleteUserById(id) {
+    const index = appUsers.findIndex((user) => user.id === id);
+
+    if (index === -1) {
+        return false;
+    }
+
+    appUsers.splice(index, 1);
+    return true;
 }

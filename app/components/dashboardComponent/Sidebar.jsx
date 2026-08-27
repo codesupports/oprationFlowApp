@@ -2,15 +2,13 @@
 "use client";
 
 import { useState } from "react";
-import { useRouter, usePathname } from "next/navigation";
-
+import { useRouter, usePathname, redirect } from "next/navigation";
+import Link from "next/link";
 // icon for left sidebar
 import { LayoutDashboard, ClipboardList, Users, CheckSquare, BarChart3, Settings, LogOut, X, Menu, } from "lucide-react";
-import Link from "next/link";
 import { useDispatch } from "react-redux";
-import { redirect } from "next/navigation";
-
 import { isLoggedOutUser } from "../../store/slices/requestSlice"
+import { getInitials, getLoggedInUserInformation } from '../../utils/helpers'
 
 
 const menuItems = [
@@ -89,6 +87,7 @@ export default function Sidebar({ onClose }) {
         dispatch(isLoggedOutUser(val))
         redirect("/login");
     }
+
     return (
         <>
             {/* Mobile Menu */}
@@ -160,12 +159,13 @@ export default function Sidebar({ onClose }) {
                 {/* User */}
                 <div className="border-t border-slate-800 p-4">
                     <div className="flex items-center gap-3 rounded-lg p-2">
-                        <div className="flex h-9 w-9 items-center justify-center rounded-full bg-blue-600 text-sm font-semibold">RK</div>
+                        <div className="flex h-9 w-9 items-center justify-center rounded-full bg-blue-600 text-sm font-semibold">
+                            {getInitials(getLoggedInUserInformation().name)}
+                        </div>
 
                         <div className="min-w-0 flex-1">
-                            <p className="truncate text-sm font-medium">Raj Kumar</p>
-
-                            <p className="truncate text-xs text-slate-400">Administrator</p>
+                            <p className="truncate text-sm font-medium capitalize">{getLoggedInUserInformation().name}</p>
+                            <p className="truncate text-xs text-slate-400">{getLoggedInUserInformation().role}</p>
                         </div>
                     </div>
 

@@ -1,8 +1,7 @@
 
-"use client";
-import { useSelector } from "react-redux";
+
 import { PieChart, Pie, Cell, Tooltip, ResponsiveContainer, } from "recharts";
-import { useGetUsersQuery } from "../../store/slices/requestSlice";
+import { useGetRecentRequestQuery } from "../../store/slices/requestSlice";
 
 // const data1 = [
 //   {
@@ -46,10 +45,7 @@ const categorieswiseRequests = (requests) => {
 };
 
 export default function CategoryChart() {
-  // const requests = useSelector((state) => state.requests?.requests ?? []);
-  // const data = categorieswiseRequests(requests);
-
-  const { data: apiData, error, isLoading } = useGetUsersQuery();
+  const { data: apiData, error, isLoading } = useGetRecentRequestQuery();
   const requests = apiData?.requests || [];
   const chartData = categorieswiseRequests(requests);
 

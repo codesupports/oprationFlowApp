@@ -1,4 +1,3 @@
-
 "use client";
 
 import { useState } from "react";
@@ -7,31 +6,67 @@ import { useForm } from "react-hook-form";
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Eye, EyeOff, Loader2 } from "lucide-react";
-import { isLoggedInUser } from "../store/slices/requestSlice"
 import { useDispatch } from "react-redux";
 
-// Login validation schema
+import {
+  isLoggedInUser,
+  useGetAllUsersQuery,
+} from "../store/slices/requestSlice";
+import Link from "next/link";
+
+// --------------------------------------------------
+// Types
+// --------------------------------------------------
+
+type User = {
+  id: string;
+  name: string;
+  email: string;
+  role: "Admin" | "User" | "Manager";
+  department: string;
+  status: "Active" | "Inactive";
+};
+
+type UsersResponse = {
+  success: boolean;
+  users: User[];
+};
+
+// --------------------------------------------------
+// Validation
+// --------------------------------------------------
+
 const loginSchema = z.object({
   email: z
     .string()
-    .min(1, "Email address is required, use this (test@test.com)")
-    .email("Please enter a valid email address, use this (test@test.com)"),
+    .min(1, "Email address is required")
+    .email("Please enter a valid email address"),
 
   password: z
     .string()
-    .min(1, "Password is required, use this (123456)"),
+    .min(1, "Password is required"),
 
   rememberMe: z.boolean(),
 });
+
+type LoginFormData = z.infer<typeof loginSchema>;
+
+// --------------------------------------------------
+// Component
+// --------------------------------------------------
 
 const LoginPage = () => {
   const router = useRouter();
   const dispatch = useDispatch();
   const [showPassword, setShowPassword] = useState(false);
-  const [isLoading, setIsLoading] = useState(false);
+  const [isLoginLoading, setIsLoginLoading] = useState(false);
   const [loginError, setLoginError] = useState("");
 
-  const { register, handleSubmit, formState: { errors }, } = useForm({
+  // Get users from API
+  const { data, isLoading: isUsersLoading, isError, } = useGetAllUsersQuery();
+
+  const { register, handleSubmit, formState: { errors },
+  } = useForm<LoginFormData>({
     resolver: zodResolver(loginSchema),
 
     defaultValues: {
@@ -41,42 +76,131 @@ const LoginPage = () => {
     },
   });
 
-  const onSubmit = async (data: any) => {
-    setLoginError("");
-    // Check login credentials
-    if (data.email !== "test@test.com" || data.password !== "123456") {
-      setLoginError("Invalid email or password.");
-      return;
-    }
-    try {
-      setIsLoading(true);
-      // Simulate API call
-      await new Promise((resolve) =>
-        setTimeout(resolve, 1000)
-      );
+  // --------------------------------------------------
+  // Login
+  // --------------------------------------------------
 
-      console.log("Login successful");
-      // localStorage.setItem("loggedInUser", JSON.stringify(user));
-      dispatch(isLoggedInUser(true))
-      // Redirect to home page
-      router.push("/dashboard");
+  const onSubmit = async (formData: LoginFormData) => {
+    setLoginError("");
+
+    try {
+      setIsLoginLoading(true);
+
+      // ----------------------------------------------
+      // API loading check
+      // ----------------------------------------------
+
+      if (isUsersLoading) {
+        setLoginError("Please wait while users are loading.");
+        return;
+      }
+
+      // ----------------------------------------------
+      // API error check
+      // ----------------------------------------------
+
+      if (isError || !data?.success) {
+        setLoginError("Unable to load users. Please try again later.");
+        return;
+      }
+
+      // ----------------------------------------------
+      // Find user
+      // ----------------------------------------------
+
+      const users = data.users || [];
+
+      const user = users.find((item) => {
+        return item.email.toLowerCase().trim() === formData.email.toLowerCase().trim()
+      });
+
+      // ----------------------------------------------
+      // User not found
+      // ----------------------------------------------
+
+      if (!user) {
+        setLoginError("Invalid email or password.");
+        return;
+      }
+
+      // ----------------------------------------------
+      // Demo password validation
+      // ----------------------------------------------
+      // IMPORTANT:
+      // Password should normally be checked by backend.
+      // This is only for your current demo API.
+
+      const DEMO_PASSWORD = "123456";
+
+      if (formData.password !== DEMO_PASSWORD) {
+        setLoginError("Invalid email or password.");
+        return;
+      }
+
+      // ----------------------------------------------
+      // Check account status
+      // ----------------------------------------------
+
+      if (user.status !== "Active") {
+        setLoginError(
+          "Your account is inactive. Please contact admin."
+        );
+        return;
+      }
+
+      // ----------------------------------------------
+      // Login successful
+      // ----------------------------------------------
+
+      console.log("Login successful:", user);
+
+      // Redux login state
+      dispatch(isLoggedInUser(true));
+
+      // ----------------------------------------------
+      // Save logged-in user
+      // ----------------------------------------------
+
+      localStorage.setItem("loggedInUser", JSON.stringify(user));
+
+      // ----------------------------------------------
+      // Remember me
+      // ----------------------------------------------
+
+      if (formData.rememberMe) {
+        localStorage.setItem("rememberMe", "true");
+      } else {
+        localStorage.removeItem("rememberMe");
+      }
+
+      // ----------------------------------------------
+      // Redirect
+      // ----------------------------------------------
+
+      // Replace the login history entry so authenticated users are routed
+      // away from the login page immediately.
+      router.replace("/dashboard");
 
     } catch (error) {
       console.error("Login failed:", error);
       setLoginError("Something went wrong. Please try again.");
     } finally {
-      setIsLoading(false);
+      setIsLoginLoading(false);
     }
   };
 
+  // --------------------------------------------------
+  // UI
+  // --------------------------------------------------
+
   return (
-    <main className="flex min-h-screen items-center justify-center bg-slate-50 px-4">
+    <main className="flex min-h-screen items-center justify-center bg-gray-600 px-4">
       <div className="w-full max-w-md rounded-2xl border border-slate-200 bg-white p-8 shadow-sm">
 
         {/* Header */}
-        <div className="mb-8 text-center">
+        <div className="mb-4 text-center">
           <h1 className="text-3xl font-bold tracking-tight text-slate-900">
-            Opration-Flow
+            Operation-Flow
           </h1>
 
           <h2 className="py-3 text-xl font-bold tracking-tight text-slate-900">
@@ -88,9 +212,19 @@ const LoginPage = () => {
           </p>
         </div>
 
+        {/* API Loading */}
+        {isUsersLoading && (
+          <div className="mb-5 rounded-lg border border-blue-200 bg-blue-50 px-4 py-3 text-sm text-blue-600">
+            Loading users...
+          </div>
+        )}
+
         {/* Login Error */}
         {loginError && (
-          <div className="mb-5 rounded-lg border border-red-200 bg-red-50 px-4 py-3 text-sm text-red-600">
+          <div
+            role="alert"
+            className="mb-5 rounded-lg border border-red-200 bg-red-50 px-4 py-3 text-sm text-red-600"
+          >
             {loginError}
           </div>
         )}
@@ -98,7 +232,7 @@ const LoginPage = () => {
         {/* Form */}
         <form
           onSubmit={handleSubmit(onSubmit)}
-          className="space-y-5"
+          className="space-y-3"
         >
           {/* Email */}
           <div className="space-y-2">
@@ -180,34 +314,31 @@ const LoginPage = () => {
           {/* Remember Me + Forgot Password */}
           <div className="flex items-center justify-between">
             <label
-              htmlFor="remember"
+              htmlFor="rememberMe"
               className="flex cursor-pointer items-center gap-2 text-sm text-slate-600"
             >
               <input
-                id="remember"
+                id="rememberMe"
                 type="checkbox"
                 {...register("rememberMe")}
                 className="h-4 w-4 rounded border-slate-300 text-indigo-600 focus:ring-indigo-500"
               />
-
               Remember me
             </label>
 
-            <a
-              href="/forgot-password"
-              className="text-sm font-medium text-blue-600 hover:text-blue-500"
-            >
-              Forgot password?
-            </a>
+            <a href="/forgot-password" className="text-sm font-medium text-blue-600 hover:text-blue-500">Forgot password?</a>
           </div>
 
           {/* Submit */}
           <button
             type="submit"
-            disabled={isLoading}
+            disabled={
+              isLoginLoading ||
+              isUsersLoading
+            }
             className="flex w-full items-center justify-center gap-2 rounded-lg bg-blue-600 px-4 py-2.5 text-sm font-semibold text-white shadow-sm transition hover:bg-blue-700 focus:outline-none focus:ring-4 focus:ring-blue-500/20 active:bg-blue-800 disabled:cursor-not-allowed disabled:opacity-70"
           >
-            {isLoading ? (
+            {isLoginLoading ? (
               <>
                 <Loader2
                   size={18}
@@ -220,19 +351,43 @@ const LoginPage = () => {
             )}
           </button>
         </form>
+        {/* <div className="rounded-lg p-4">
+          <Link
+            href="/addUser"
+            className="block text-right text-sm font-medium text-blue-600 hover:text-blue-500"
+          >
+            Create Account
+          </Link>
+        </div> */}
+
+        {/* Demo Credentials */}
+        <div className="mt-1 rounded-lg bg-slate-50 p-4">
+          <p className="text-xs font-semibold text-slate-700">
+            Demo credentials
+          </p>
+
+          <p className="mt-1 text-xs text-slate-500">
+            Email: raj@example.com
+          </p>
+
+          <p className="text-xs text-slate-500">
+            Password: 123456
+          </p>
+        </div>
 
         {/* Contact Admin */}
-        <p className="mt-6 text-center text-sm text-slate-500">
+        <p className="mt-2 text-center text-sm text-slate-500">
           Don&apos;t have an account?{" "}
-          <a
-            href="/contact-admin"
+          <Link
+            href="/addUser"
             className="font-semibold text-blue-600 hover:text-blue-500"
           >
-            Contact Admin
-          </a>
+            Create Account
+          </Link>
+
         </p>
       </div>
-    </main>
+    </main >
   );
 };
 

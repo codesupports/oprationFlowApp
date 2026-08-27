@@ -2,27 +2,25 @@
 
 import { useState } from "react";
 import { X } from "lucide-react";
+import { useCreateUserMutation } from "../store/slices/requestSlice";
 import { useRouter } from "next/navigation";
 
-import { useCreateUserMutation, } from "../store/slices/requestSlice";
 
 export default function AddUser() {
     const router = useRouter();
 
-    const [createUser, { isLoading }] =
-        useCreateUserMutation();
+    const [createUser, { isLoading }] = useCreateUserMutation();
 
     const [formData, setFormData] = useState({
         name: "",
         email: "",
-        role: "User",
+        role: "",
         department: "",
-        status: "Active",
+        status: "",
     });
 
     const handleChange = (e) => {
         const { name, value } = e.target;
-
         setFormData((prev) => ({
             ...prev,
             [name]: value,
@@ -31,14 +29,10 @@ export default function AddUser() {
 
     const handleSubmit = async (e) => {
         e.preventDefault();
-
         try {
             console.log("Sending:", formData);
-
             const response = await createUser(formData).unwrap();
-
             console.log("Created:", response);
-
             router.back();
         } catch (error) {
             console.error("Create user failed:", error);
@@ -48,17 +42,11 @@ export default function AddUser() {
     return (
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 px-4">
             <div className="w-full max-w-lg rounded-xl bg-white shadow-xl">
-
                 {/* Header */}
                 <div className="flex items-center justify-between border-b px-6 py-4">
                     <div>
-                        <h2 className="text-lg font-semibold">
-                            Add User
-                        </h2>
-
-                        <p className="mt-1 text-xs text-slate-500">
-                            Create a new user account
-                        </p>
+                        <h2 className="text-lg font-semibold">Add User</h2>
+                        <p className="mt-1 text-xs text-slate-500">Create a new user account</p>
                     </div>
 
                     <button
@@ -77,10 +65,7 @@ export default function AddUser() {
                 >
                     {/* Name */}
                     <div>
-                        <label className="mb-1.5 block text-sm font-medium">
-                            Name
-                        </label>
-
+                        <label className="mb-1.5 block text-sm font-medium">Name</label>
                         <input
                             name="name"
                             value={formData.name}
@@ -93,10 +78,7 @@ export default function AddUser() {
 
                     {/* Email */}
                     <div>
-                        <label className="mb-1.5 block text-sm font-medium">
-                            Email
-                        </label>
-
+                        <label className="mb-1.5 block text-sm font-medium">Email</label>
                         <input
                             type="email"
                             name="email"
@@ -110,76 +92,48 @@ export default function AddUser() {
 
                     {/* Role */}
                     <div>
-                        <label className="mb-1.5 block text-sm font-medium">
-                            Role
-                        </label>
-
+                        <label className="mb-1.5 block text-sm font-medium">Roles</label>
                         <select
                             name="role"
                             value={formData.role}
                             onChange={handleChange}
                             className="w-full rounded-lg border bg-white px-3 py-2.5"
                         >
-                            <option value="User">
-                                User
-                            </option>
-
-                            <option value="Manager">
-                                Manager
-                            </option>
-
-                            <option value="Admin">
-                                Admin
-                            </option>
+                            <option value="">Select Role</option>
+                            <option value="User">User</option>
+                            <option value="Manager">Manager</option>
+                            <option value="Admin">Admin</option>
                         </select>
                     </div>
 
                     {/* Department */}
                     <div>
-                        <label className="mb-1.5 block text-sm font-medium">
-                            Department
-                        </label>
-
+                        <label className="mb-1.5 block text-sm font-medium">Department</label>
                         <select
                             name="department"
                             value={formData.department}
                             onChange={handleChange}
-                            className="w-full rounded-lg border bg-white px-3 py-2.5"
-                        >
-                            <option value="">
-                                Select department
-                            </option>
-
+                            className="w-full rounded-lg border bg-white px-3 py-2.5">
+                            <option value="">Select department</option>
                             <option value="IT">IT</option>
                             <option value="HR">HR</option>
-                            <option value="Finance">
-                                Finance
-                            </option>
-                            <option value="Operations">
-                                Operations
-                            </option>
+                            <option value="Finance">Finance</option>
+                            <option value="Operations">Operations</option>
                         </select>
                     </div>
 
                     {/* Status */}
                     <div>
-                        <label className="mb-1.5 block text-sm font-medium">
-                            Status
-                        </label>
-
+                        <label className="mb-1.5 block text-sm font-medium">Status</label>
                         <select
                             name="status"
                             value={formData.status}
                             onChange={handleChange}
                             className="w-full rounded-lg border bg-white px-3 py-2.5"
                         >
-                            <option value="Active">
-                                Active
-                            </option>
-
-                            <option value="Inactive">
-                                Inactive
-                            </option>
+                            <option value="">Select Status</option>
+                            <option value="Active">Active</option>
+                            <option value="Inactive">Inactive</option>
                         </select>
                     </div>
 

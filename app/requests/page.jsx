@@ -1,23 +1,19 @@
 "use client";
 
 import { useMemo, useState } from "react";
-import { useSelector, useDispatch } from "react-redux";
+import { useDispatch } from "react-redux";
 import { useRouter } from "next/navigation";
 import { SlidersHorizontal, X, } from "lucide-react";
-
+import { useGetRecentRequestQuery, useDeleteItemRequestMutation, isEditRequest } from "../store/slices/requestSlice";
 import RequestTable from "../components/requests/RequestTable";
 import RequestFilters from "../components/requests/RequestFilters";
-import { useGetUsersQuery, useDeleteItemRequestMutation, isEditRequest } from "../store/slices/requestSlice";
 
 export default function RequestsPage() {
     const router = useRouter();
     const [deleteItemRequestMutation] = useDeleteItemRequestMutation();
-    // const [requests, setRequests] = useState(initialRequests);
     const dispatch = useDispatch();
-    // const requests = useSelector((state) => state.requests.requests);
-    const { data, error, isLoading } = useGetUsersQuery();
+    const { data, error, isLoading } = useGetRecentRequestQuery();
 
-    // console.log("RequestsPage data:", data?.requests);
     const [filters, setFilters] = useState({
         search: "",
         status: "All",
@@ -34,13 +30,9 @@ export default function RequestsPage() {
             const matchesSearch = !searchValue || request.id.toLowerCase().includes(searchValue) ||
                 request.title.toLowerCase().includes(searchValue) ||
                 request.assignedTo.toLowerCase().includes(searchValue);
-
             const matchesStatus = filters.status === "All" || request.status === filters.status;
-
             const matchesPriority = filters.priority === "All" || request.priority === filters.priority;
-
             const matchesCategory = filters.category === "All" || request.category === filters.category;
-
             return (
                 matchesSearch &&
                 matchesStatus &&
@@ -54,16 +46,13 @@ export default function RequestsPage() {
     );
 
     const startIndex = (currentPage - 1) * itemsPerPage;
-
     const paginatedRequests = filteredRequests?.slice(startIndex, startIndex + itemsPerPage);
-    // console.log('filteredRequests', paginatedRequests)
 
     const handleFilterChange = (name, value) => {
         setFilters((previous) => ({
             ...previous,
             [name]: value,
         }));
-
         setCurrentPage(1);
     };
 
@@ -74,7 +63,6 @@ export default function RequestsPage() {
             priority: "All",
             category: "All",
         });
-
         setCurrentPage(1);
     };
 
@@ -83,7 +71,7 @@ export default function RequestsPage() {
         if (!confirmed) return;
 
         try {
-            console.log("Deleting ID:", id);
+            // console.log("Deleting ID:", id);
             const result = await deleteItemRequestMutation(id).unwrap();
             console.log("Delete success:", result);
 
@@ -132,9 +120,7 @@ export default function RequestsPage() {
                                 size={18}
                                 className="text-slate-500"
                             />
-                            <h2 className="text-sm font-semibold text-slate-800">
-                                Search & Filters
-                            </h2>
+                            <h2 className="text-sm font-semibold text-slate-800">Search & Filters</h2>
                         </div>
 
                         <RequestFilters
@@ -146,11 +132,8 @@ export default function RequestsPage() {
 
                     <div className="mt-6 flex items-center justify-between">
                         <div>
-                            <p className="text-sm text-slate-500">
-                                Showing{" "}
-                                <span className="font-semibold text-slate-700">
-                                    {filteredRequests?.length}
-                                </span>{" "}
+                            <p className="text-sm text-slate-500">Showing{" "}
+                                <span className="font-semibold text-slate-700">{filteredRequests?.length}</span>{" "}
                                 requests
                             </p>
                         </div>

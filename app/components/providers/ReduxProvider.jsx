@@ -19,12 +19,25 @@ function AppContent({ children }) {
         (state) => state.requests.loggedInUser
     );
 
+    // Public routes
+    // const publicRoutes = ["/login", "/addUser", "/contact-admin", "/forgot-password"];
+    const publicRoutes = ["/login", "/addUser"];
+
+
+    const isPublicRoute = publicRoutes.includes(pathname);
+
     // Restore user after refresh
     useEffect(() => {
         const storedUser = localStorage.getItem("loggedInUser");
 
         if (storedUser) {
-            dispatch(isLoggedInUser(JSON.parse(storedUser)));
+            try {
+                dispatch(isLoggedInUser(JSON.parse(storedUser)));
+            } catch (error) {
+                console.error("Invalid stored user:", error);
+                localStorage.removeItem("loggedInUser");
+                dispatch(isLoggedOutUser());
+            }
         } else {
             dispatch(isLoggedOutUser());
         }
@@ -34,16 +47,19 @@ function AppContent({ children }) {
     useEffect(() => {
         if (loggedInUser === null) return;
 
-        if (!loggedInUser && pathname !== "/login") {
+        // User not logged in
+        if (!loggedInUser && !isPublicRoute) {
             router.replace("/login");
         }
-    }, [loggedInUser, pathname, router]);
+    }, [loggedInUser, pathname, router, isPublicRoute]);
 
-    if (loggedInUser === null) {
-        return <div><Loader /></div>;
-    }
+    // Wait until localStorage restore is complete
+    // if (loggedInUser === null) {
+    //     return <Loader />;
+    // }
 
-    if (!loggedInUser && pathname !== "/login") {
+    // Don't render protected page before redirect
+    if (!loggedInUser && !isPublicRoute) {
         return null;
     }
 

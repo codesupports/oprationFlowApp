@@ -20,35 +20,17 @@ export default function StatCard({
   };
   return (
     <div className={`rounded-xl border border-slate-300 p-5 shadow-sm transition hover:shadow-md ${bgStyles[title]}`}>
-
       <div className="flex items-start justify-between">
-
         <div>
-          <p className={`text-sm font-bold  ${statusStyles[title]}`}>
-            {title}
-          </p>
-
-          <p className="mt-2 text-3xl font-bold tracking-tight text-slate-900">
-            {value}
-          </p>
+          <p className={`text-xl font-bold  ${statusStyles[title]}`}>{title}</p>
+          <p className="mt-2 text-3xl font-bold tracking-tight text-slate-900">{value}</p>
         </div>
-
-        <div className={`rounded-lg ${statusStyles[title]}`}>
-          <Icon size={30} />
-        </div>
-
+        <div className={`rounded-lg ${statusStyles[title]}`}><Icon size={30} /></div>
       </div>
-
       <div className="mt-4 flex items-center gap-2">
-        <span className="text-sm font-semibold text-emerald-600">
-          {change}
-        </span>
-
-        <span className="text-xs text-slate-400">
-          {description}
-        </span>
+        <span className="text-sm font-semibold text-emerald-600">{change}</span>
+        <span className="text-xs text-slate-400">{description}</span>
       </div>
-
     </div>
   );
 }
