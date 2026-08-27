@@ -23,7 +23,7 @@ const months = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "
 export const filterRequestsByMonth = (requests: any) => {
     const monthlyData = months.map((month, index) => ({
         month,
-        requests: requests.filter((req) => {
+        requests: requests.filter((req: any) => {
             const reqDate = new Date(req.date);
             return reqDate.getMonth() === index;
         }).length,

@@ -63,7 +63,7 @@ const LoginPage = () => {
   const [loginError, setLoginError] = useState("");
 
   // Get users from API
-  const { data, isLoading: isUsersLoading, isError, } = useGetAllUsersQuery();
+  const { data, isLoading: isUsersLoading, isError } = useGetAllUsersQuery(undefined);
 
   const { register, handleSubmit, formState: { errors },
   } = useForm<LoginFormData>({
@@ -110,7 +110,7 @@ const LoginPage = () => {
 
       const users = data.users || [];
 
-      const user = users.find((item) => {
+      const user = users.find((item: any) => {
         return item.email.toLowerCase().trim() === formData.email.toLowerCase().trim()
       });
 
