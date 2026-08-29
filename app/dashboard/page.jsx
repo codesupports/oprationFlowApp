@@ -1,7 +1,7 @@
 
 "use client";
 
-import Header from "../components/dashboardComponent/Header";
+
 import StatCard from "../components/dashboardComponent/StatCard";
 import RequestTrend from "../components/dashboardComponent/RequestTrend";
 import CategoryChart from "../components/dashboardComponent/CategoryChart";
@@ -9,6 +9,7 @@ import RecentRequests from "../components/dashboardComponent/RecentRequests";
 import { useGetRecentRequestQuery } from "../store/slices/requestSlice";
 import { getLoggedInUserInformation } from '../utils/helpers'
 import { ClipboardList, Clock3, LoaderCircle, CheckCircle2, } from "lucide-react";
+import StatusChart from "../components/dashboardComponent/StatusChart";
 
 export default function DashboardPage() {
     const { data } = useGetRecentRequestQuery(undefined);
@@ -66,7 +67,6 @@ export default function DashboardPage() {
         <div className="flex min-h-screen bg-slate-50">
             {/* Main Content */}
             <div className="flex min-w-0 flex-1 flex-col lg:ml-64">
-                <Header />
                 <main className="flex-1 p-4 sm:p-6 lg:p-8">
                     {/* Page Header */}
                     <div className="mb-8">
@@ -85,9 +85,10 @@ export default function DashboardPage() {
                     </div>
 
                     {/* Charts */}
-                    <div className="mt-6 grid grid-cols-1 gap-6 xl:grid-cols-3">
+                    <div className="mt-6 grid grid-cols-1 gap-6 xl:grid-cols-4">
                         <div className="xl:col-span-2"><RequestTrend /></div>
                         <div><CategoryChart /></div>
+                        <div><StatusChart /></div>
                     </div>
 
                     {/* Recent Requests */}

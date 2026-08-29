@@ -1,14 +1,14 @@
 "use client";
 
-import { Provider, useDispatch, useSelector } from "react-redux";
 import { useEffect } from "react";
+import { Provider, useDispatch, useSelector } from "react-redux";
 import { usePathname, useRouter } from "next/navigation";
-
 import { store } from "../../store/store";
-import Sidebar from "../dashboardComponent/Sidebar";
 import { isLoggedInUser, isLoggedOutUser } from "../../store/slices/requestSlice";
 import AuthActivity from '../../AuthActivity/authActivity'
-import Loader from '../Loader'
+import Header from "../dashboardComponent/Header";
+import Sidebar from "../dashboardComponent/Sidebar";
+import { getLoggedInUserInformation } from "@/app/utils/helpers";
 
 function AppContent({ children }) {
     const dispatch = useDispatch();
@@ -66,15 +66,17 @@ function AppContent({ children }) {
     return (
         <>
             {loggedInUser && <Sidebar onClose="" />}
+            {loggedInUser && <Header />}
             {children}
         </>
     );
 }
-
+console.log('isLoggedOutUser()', isLoggedOutUser() == undefined)
 export default function ReduxProvider({ children }) {
     return (
         <Provider store={store}>
             <AuthActivity />
+
             <AppContent>{children}</AppContent>
         </Provider>
     );

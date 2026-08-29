@@ -38,9 +38,9 @@ const menuItems = [
         href: "/allUser",
     },
     {
-        label: "Reports",
+        label: "Download Reports",
         icon: BarChart3,
-        href: "",
+        href: "/reports",
     },
     {
         label: "Settings",
@@ -97,7 +97,7 @@ export default function Sidebar({ onClose }) {
             >
                 <Menu size={22} />
             </button>
-            {toggleHmburger && <div class="absolute inset-0 bg-black/50 z-50" onClick={toggleMobileMenu} />}
+            {toggleHmburger && <div className="absolute inset-0 bg-black/50 z-50" onClick={toggleMobileMenu} />}
             <aside className={`fixed inset-y-0 md:left-0 z-50 flex w-64 flex-col bg-slate-900 text-white ${toggleHmburger ? "left-0" : "-left-75"}`}>
 
                 {/* Logo */}

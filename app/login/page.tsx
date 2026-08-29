@@ -82,61 +82,47 @@ const LoginPage = () => {
 
   const onSubmit = async (formData: LoginFormData) => {
     setLoginError("");
-
     try {
       setIsLoginLoading(true);
-
       // ----------------------------------------------
       // API loading check
       // ----------------------------------------------
-
       if (isUsersLoading) {
         setLoginError("Please wait while users are loading.");
         return;
       }
-
       // ----------------------------------------------
       // API error check
       // ----------------------------------------------
-
       if (isError || !data?.success) {
         setLoginError("Unable to load users. Please try again later.");
         return;
       }
-
       // ----------------------------------------------
       // Find user
       // ----------------------------------------------
-
       const users = data.users || [];
-
       const user = users.find((item: any) => {
         return item.email.toLowerCase().trim() === formData.email.toLowerCase().trim()
       });
-
       // ----------------------------------------------
       // User not found
       // ----------------------------------------------
-
       if (!user) {
         setLoginError("Invalid email or password.");
         return;
       }
-
       // ----------------------------------------------
       // Demo password validation
       // ----------------------------------------------
       // IMPORTANT:
       // Password should normally be checked by backend.
       // This is only for your current demo API.
-
       const DEMO_PASSWORD = "123456";
-
       if (formData.password !== DEMO_PASSWORD) {
         setLoginError("Invalid email or password.");
         return;
       }
-
       // ----------------------------------------------
       // Check account status
       // ----------------------------------------------
@@ -148,24 +134,10 @@ const LoginPage = () => {
         return;
       }
 
-      // ----------------------------------------------
-      // Login successful
-      // ----------------------------------------------
-
       console.log("Login successful:", user);
-
       // Redux login state
       dispatch(isLoggedInUser(true));
-
-      // ----------------------------------------------
-      // Save logged-in user
-      // ----------------------------------------------
-
       localStorage.setItem("loggedInUser", JSON.stringify(user));
-
-      // ----------------------------------------------
-      // Remember me
-      // ----------------------------------------------
 
       if (formData.rememberMe) {
         localStorage.setItem("rememberMe", "true");
@@ -173,14 +145,7 @@ const LoginPage = () => {
         localStorage.removeItem("rememberMe");
       }
 
-      // ----------------------------------------------
-      // Redirect
-      // ----------------------------------------------
-
-      // Replace the login history entry so authenticated users are routed
-      // away from the login page immediately.
       router.replace("/dashboard");
-
     } catch (error) {
       console.error("Login failed:", error);
       setLoginError("Something went wrong. Please try again.");

@@ -19,9 +19,13 @@ export default function Header() {
     const [showDropdown, setShowDropdown] = useState(false);
     const dispatch = useDispatch();
     const router = useRouter();
-
     // Reference to profile + dropdown
     const profileRef = useRef(null);
+
+    const [users, setUsers] = useState({}); // due to hydration error 
+    useEffect(() => {  // due to hydration error 
+        setUsers(getLoggedInUserInformation());
+    }, []);
 
     useEffect(() => {
         const handleClickOutside = (event) => {
@@ -35,6 +39,8 @@ export default function Header() {
         document.addEventListener("mousedown", handleClickOutside);
         return () => { document.removeEventListener("mousedown", handleClickOutside) };
     }, []);
+
+
 
     const handleLogout = () => {
         dispatch(isLoggedOutUser(null));
@@ -73,12 +79,12 @@ export default function Header() {
                         className="flex items-center gap-3 rounded-lg p-1.5 hover:bg-slate-50 cursor-pointer"
                     >
                         <div className="flex h-9 w-9 items-center justify-center rounded-full bg-blue-600 text-sm font-semibold text-white">
-                            {getInitials(getLoggedInUserInformation().name)}
+                            {getInitials(users.name)}
                         </div>
 
                         <div className="hidden text-left sm:block">
-                            <p className="text-sm font-semibold text-slate-800 capitalize">{getLoggedInUserInformation().name}</p>
-                            <p className="text-xs text-slate-500">{getLoggedInUserInformation().role}</p>
+                            <p className="text-sm font-semibold text-slate-800 capitalize">{users.name}</p>
+                            <p className="text-xs text-slate-500">{users.role}</p>
                         </div>
 
                         <ChevronDown
