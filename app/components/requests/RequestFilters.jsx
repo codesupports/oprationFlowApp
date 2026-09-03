@@ -2,31 +2,32 @@
 "use client";
 
 import RequestSearch from "./RequestSearch";
+import { RequestStatus, RequestPriority, RequestCategory } from '../../constants/enums'
 
 const statusOptions = [
-  "All",
-  "Open",
-  "Pending",
-  "In Progress",
-  "Completed",
-  "Rejected",
+  RequestStatus.ALL,
+  RequestStatus.OPEN,
+  RequestStatus.PENDING,
+  RequestStatus.IN_PROGRESS,
+  RequestStatus.COMPLETED,
+  RequestStatus.REJECTED,
 ];
 
 const priorityOptions = [
-  "All",
-  "Low",
-  "Medium",
-  "High",
-  "critical",
+  RequestPriority.ALL,
+  RequestPriority.LOW,
+  RequestPriority.MEDIUM,
+  RequestPriority.HIGH,
+  RequestPriority.CRITICAL, ,
 ];
 
 const categoryOptions = [
-  "All",
-  "Hardware",
-  "Software",
-  "Access",
-  "HR",
-  "Other",
+  RequestCategory.ALL,
+  RequestCategory.HARDWARE,
+  RequestCategory.SOFTWARE,
+  RequestCategory.ACCESS,
+  RequestCategory.HR,
+  RequestCategory.OTHER,
 ];
 
 export default function RequestFilters({

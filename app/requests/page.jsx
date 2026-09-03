@@ -72,8 +72,8 @@ export default function RequestsPage() {
 
         try {
             // console.log("Deleting ID:", id);
-            const result = await deleteItemRequestMutation(id).unwrap();
-            console.log("Delete success:", result);
+            await deleteItemRequestMutation(id).unwrap();
+            // console.log("Delete success:", result);
 
         } catch (error) {
             console.error("Delete error:", error);
@@ -90,7 +90,7 @@ export default function RequestsPage() {
             return request.id == id
         })
         dispatch(isEditRequest(ftData))
-        console.log('asdasdasdasdasdasdasdasdas')
+        // console.log('asdasdasdasdasdasdasdasdas')
         router.push(`/requests/edit`);// For Handle Edit
     };
 

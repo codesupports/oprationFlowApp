@@ -1,11 +1,14 @@
 import { createSlice } from "@reduxjs/toolkit";
 import { createApi, fetchBaseQuery, } from "@reduxjs/toolkit/query/react";
 
+
+const baseUrl = process.env.NEXT_PUBLIC_API_URL; // From .env.local
+
 export const requestApi = createApi({
     reducerPath: "requestApi",
 
     baseQuery: fetchBaseQuery({
-        baseUrl: "https://opration-flow-app.vercel.app/", // https://opration-flow-app.vercel.app/
+        baseUrl: baseUrl, // https://opration-flow-app.vercel.app/
     }),
 
     tagTypes: ["Requests", "Users",],
@@ -24,17 +27,24 @@ export const requestApi = createApi({
             invalidatesTags: ["Requests"],
         }),
         updateRequest: builder.mutation({
-            query: ({ id, ...updatedRequest }) => ({
-                url: `/api/users/${id}`,
+            query: (updatedRequest) => ({
+                url: "/api/users",
                 method: "PUT",
                 body: updatedRequest,
             }),
             invalidatesTags: ["Requests"],
         }),
+        // updateRequest: builder.mutation({
+        //     query: ({ id, ...updatedRequest }) => ({
+        //         url: `/api/users/${id}`,
+        //         method: "PUT",
+        //         body: updatedRequest,
+        //     }),
+        //     invalidatesTags: ["Requests"],
+        // }),
         deleteItemRequest: builder.mutation({
             query: (id) => {
                 console.log("DELETE API ID:", id);
-
                 return {
                     url: `/api/users/${id}`,
                     method: "DELETE",
@@ -64,6 +74,14 @@ export const requestApi = createApi({
             },
             invalidatesTags: ["Users"],
         }),
+        updateUser: builder.mutation({
+            query: ({ id, ...updatedRequest }) => ({
+                url: `/api/allusers/${id}`,
+                method: "PUT",
+                body: updatedRequest,
+            }),
+            invalidatesTags: ["Users"],
+        }),
     })
 });
 
@@ -82,10 +100,10 @@ const initialState = {
     loading: false,
     error: null,
     loggedInUser: null,
-    isEditData: null
+    isEditData: null,
+    showSelectedRequestData: null
 };
-
-// console.log('isEditData----------', initialState.isEditData)
+console.log('creatSlice data', initialState.showSelectedRequestData)
 const requestSlice = createSlice({
     name: "requests",
     initialState,
@@ -93,38 +111,23 @@ const requestSlice = createSlice({
     reducers: {
         isLoggedInUser: (state, action) => {
             state.loggedInUser = action.payload;
-            localStorage.setItem("loggedInUser", JSON.stringify(action.payload));
+            sessionStorage.setItem("loggedInUser", JSON.stringify(action.payload));
 
         },
         isLoggedOutUser: (state, action) => {
             state.loggedInUser = action.payload;
-            localStorage.removeItem("loggedInUser");
+            sessionStorage.removeItem("loggedInUser");
         },
         isEditRequest: (state, action) => {
             state.isEditData = action.payload
         },
         updateRequestData: (state, action) => {
             console.log('updateRequestData-', action)
+        },
+        showSelectedRequestData: (state, action) => {
+            // console.log('action', action.payload)
+            state.showSelectedRequestData = action.payload
         }
-        //     addRequest: (state, action) => {
-        //         state.requests.push(action.payload);
-        //     },
-
-        //     updateRequest: (state, action) => {
-        //         const index = state.requests.findIndex(
-        //             (request) => request.id === action.payload.id
-        //         );
-
-        //         if (index !== -1) {
-        //             state.requests[index] = action.payload;
-        //         }
-        //     },
-
-        //     // deleteRequest: (state, action) => {
-        //     //     state.requests = state.requests.filter(
-        //     //         (request) => request.id !== action.payload
-        //     //     );
-        //     // },
     },
     extraReducers: (builder) => {
         builder
@@ -159,7 +162,8 @@ export const {
     // deleteRequest,
     isLoggedInUser,
     isLoggedOutUser,
-    updateRequestData
+    updateRequestData,
+    showSelectedRequestData
 } = requestSlice.actions;
 
 export default requestSlice.reducer;

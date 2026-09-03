@@ -28,14 +28,14 @@ function AppContent({ children }) {
 
     // Restore user after refresh
     useEffect(() => {
-        const storedUser = localStorage.getItem("loggedInUser");
+        const storedUser = sessionStorage.getItem("loggedInUser");
 
         if (storedUser) {
             try {
                 dispatch(isLoggedInUser(JSON.parse(storedUser)));
             } catch (error) {
                 console.error("Invalid stored user:", error);
-                localStorage.removeItem("loggedInUser");
+                sessionStorage.removeItem("loggedInUser");
                 dispatch(isLoggedOutUser());
             }
         } else {
@@ -53,7 +53,7 @@ function AppContent({ children }) {
         }
     }, [loggedInUser, pathname, router, isPublicRoute]);
 
-    // Wait until localStorage restore is complete
+    // Wait until sessionStorage restore is complete
     // if (loggedInUser === null) {
     //     return <Loader />;
     // }

@@ -10,7 +10,7 @@ import {
 } from "lucide-react";
 import { useRouter } from "next/navigation";
 import { useGetAllUsersQuery, useDeleteUserMutation } from "../store/slices/requestSlice";
-import { getInitials } from '../utils/helpers'
+import { getInitials, getLoggedInUserInformation } from '../utils/helpers'
 
 export default function UserList() {
     const router = useRouter();
@@ -42,11 +42,8 @@ export default function UserList() {
         });
     }, [displayedUsers, search, roleFilter, statusFilter]);
 
-    const loggedUser = JSON.parse(localStorage.getItem("loggedInUser") || "{}");
-
     const handleDelete = async (id) => {
-
-        if (loggedUser.id == id) {
+        if (getLoggedInUserInformation().id == id) {
             window.confirm("You cannot delete your own account while logged in. Please contact an administrator if you need to delete this account.");
         } else {
             const confirmed = window.confirm("Are you sure you want to delete this user?");

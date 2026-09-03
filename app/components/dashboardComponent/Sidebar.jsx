@@ -93,7 +93,7 @@ export default function Sidebar({ onClose }) {
             {/* Mobile Menu */}
             <button
                 onClick={toggleMobileMenu}
-                className="rounded-lg p-2 absolute z-50 top-4 left-3 text-slate-600 hover:bg-slate-100 mg:hidden"
+                className="rounded-lg p-2 fixed z-50 top-4 left-3 text-slate-600 hover:bg-slate-100 mg:hidden"
             >
                 <Menu size={22} />
             </button>

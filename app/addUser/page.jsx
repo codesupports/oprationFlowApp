@@ -65,20 +65,20 @@ export default function AddUser() {
                 >
                     {/* Name */}
                     <div>
-                        <label className="mb-1.5 block text-sm font-medium">Name</label>
+                        <label className="mb-1.5 block text-sm font-medium text-gray-500">Name</label>
                         <input
                             name="name"
                             value={formData.name}
                             onChange={handleChange}
                             placeholder="Enter full name"
                             required
-                            className="w-full rounded-lg border px-3 py-2.5"
+                            className="w-full rounded-lg border border-blue-600 text-blue-600 px-3 py-2.5"
                         />
                     </div>
 
                     {/* Email */}
                     <div>
-                        <label className="mb-1.5 block text-sm font-medium">Email</label>
+                        <label className="mb-1.5 block text-sm font-medium text-gray-500">Email</label>
                         <input
                             type="email"
                             name="email"
@@ -86,18 +86,18 @@ export default function AddUser() {
                             onChange={handleChange}
                             placeholder="Enter email"
                             required
-                            className="w-full rounded-lg border px-3 py-2.5"
+                            className="w-full rounded-lg border border-blue-600 text-blue-600 px-3 py-2.5"
                         />
                     </div>
 
                     {/* Role */}
                     <div>
-                        <label className="mb-1.5 block text-sm font-medium">Roles</label>
+                        <label className="mb-1.5 block text-sm font-medium text-gray-500">Roles</label>
                         <select
                             name="role"
                             value={formData.role}
                             onChange={handleChange}
-                            className="w-full rounded-lg border bg-white px-3 py-2.5"
+                            className="w-full rounded-lg border border-blue-600 text-blue-600 px-3 py-2.5"
                         >
                             <option value="">Select Role</option>
                             <option value="User">User</option>
@@ -108,12 +108,12 @@ export default function AddUser() {
 
                     {/* Department */}
                     <div>
-                        <label className="mb-1.5 block text-sm font-medium">Department</label>
+                        <label className="mb-1.5 block text-sm font-medium text-gray-500">Department</label>
                         <select
                             name="department"
                             value={formData.department}
                             onChange={handleChange}
-                            className="w-full rounded-lg border bg-white px-3 py-2.5">
+                            className="w-full rounded-lg border border-blue-600 text-blue-600 px-3 py-2.5">
                             <option value="">Select department</option>
                             <option value="IT">IT</option>
                             <option value="HR">HR</option>
@@ -124,12 +124,12 @@ export default function AddUser() {
 
                     {/* Status */}
                     <div>
-                        <label className="mb-1.5 block text-sm font-medium">Status</label>
+                        <label className="mb-1.5 block text-sm font-medium text-gray-500">Status</label>
                         <select
                             name="status"
                             value={formData.status}
                             onChange={handleChange}
-                            className="w-full rounded-lg border bg-white px-3 py-2.5"
+                            className="w-full rounded-lg border border-blue-600 text-blue-600 px-3 py-2.5"
                         >
                             <option value="">Select Status</option>
                             <option value="Active">Active</option>

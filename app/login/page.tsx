@@ -137,12 +137,12 @@ const LoginPage = () => {
       console.log("Login successful:", user);
       // Redux login state
       dispatch(isLoggedInUser(true));
-      localStorage.setItem("loggedInUser", JSON.stringify(user));
+      sessionStorage.setItem("loggedInUser", JSON.stringify(user));
 
       if (formData.rememberMe) {
-        localStorage.setItem("rememberMe", "true");
+        sessionStorage.setItem("rememberMe", "true");
       } else {
-        localStorage.removeItem("rememberMe");
+        sessionStorage.removeItem("rememberMe");
       }
 
       router.replace("/dashboard");

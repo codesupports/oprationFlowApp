@@ -15,7 +15,7 @@ export const getLoggedInUserInformation = () => {
         return {};
     }
 
-    return JSON.parse(localStorage.getItem("loggedInUser") || "{}");
+    return JSON.parse(sessionStorage.getItem("loggedInUser") || "{}");
 };
 
 // ForMap data
@@ -32,8 +32,6 @@ export const filterRequestsByMonth = (requests: any) => {
 };
 
 // Percentage 
-
-
 export const getPercentOfNumber = (part: number, total: number) => {
     if (total === 0) {
         return null
@@ -41,9 +39,7 @@ export const getPercentOfNumber = (part: number, total: number) => {
     return (part / total) * 100;
 }
 
-
 // Get Today DAte for
-
 export const todayDate = () => {
     const today = new Date();
     // Array mapping index numbers to short month names

@@ -1,7 +1,7 @@
 // Shared in-memory store for requests
 export let storedRequests = [
     {
-        id: "REQ-100100",
+        id: "REQ-1001",
         title: "Laptop replacement",
         description: "Laptop is not working properly and needs replacement.",
         category: "Hardware",
@@ -10,6 +10,7 @@ export let storedRequests = [
         assignedTo: "Amit Sharma",
         requestedBy: "Raj Kumar",
         date: "Jan 10, 2026",
+        action: ""
     },
     {
         id: "REQ-1002",
@@ -21,6 +22,8 @@ export let storedRequests = [
         assignedTo: "Priya Singh",
         requestedBy: "Raj Kumar",
         date: "Feb 9, 2026",
+        action: ""
+
     },
     {
         id: "REQ-1003",
@@ -32,6 +35,8 @@ export let storedRequests = [
         assignedTo: "Rahul Verma",
         requestedBy: "Raj Kumar",
         date: "March 8, 2026",
+        action: ""
+
     },
     {
         id: "REQ-1004",
@@ -43,6 +48,8 @@ export let storedRequests = [
         assignedTo: "Rahul Verma",
         requestedBy: "Raj Kumar",
         date: "March 8, 2026",
+        action: ""
+
     },
     {
         id: "REQ-1005",
@@ -54,6 +61,8 @@ export let storedRequests = [
         assignedTo: "Rahul Verma",
         requestedBy: "Raj Kumar",
         date: "March 11, 2026",
+        action: ""
+
     },
     {
         id: "REQ-1006",
@@ -65,6 +74,7 @@ export let storedRequests = [
         assignedTo: "Rahul Verma",
         requestedBy: "Raj Kumar",
         date: "June 11, 2026",
+        action: ""
     },
     {
         id: "REQ-1007",
@@ -76,6 +86,7 @@ export let storedRequests = [
         assignedTo: "Rahul Verma",
         requestedBy: "Raj Kumar",
         date: "June 11, 2026",
+        action: ""
     },
     {
         id: "REQ-1008",
@@ -87,6 +98,7 @@ export let storedRequests = [
         assignedTo: "Rahul Verma",
         requestedBy: "Raj Kumar",
         date: "July 11, 2026",
+        action: ""
     }
 ];
 

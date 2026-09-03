@@ -11,22 +11,22 @@ export default function AuthActivity() {
 
     useEffect(() => {
         const checkInactivity = () => {
-            const lastActivity = localStorage.getItem("lastActivity");
+            const lastActivity = sessionStorage.getItem("lastActivity");
 
             if (!lastActivity) return;
 
             const inactiveTime = Date.now() - Number(lastActivity);
 
             if (inactiveTime >= INACTIVITY_TIME) {
-                localStorage.removeItem("loggedInUser");
-                localStorage.removeItem("lastActivity");
+                sessionStorage.removeItem("loggedInUser");
+                sessionStorage.removeItem("lastActivity");
 
                 dispatch(isLoggedOutUser());
             }
         };
 
         const updateActivity = () => {
-            localStorage.setItem(
+            sessionStorage.setItem(
                 "lastActivity",
                 Date.now().toString()
             );

@@ -26,10 +26,14 @@ export default function StatusChart() {
     return status === "completed" || status === "resolved" || status === "done";
   }).length;
 
-  // const totalRequests = statusData.reduce(
-  //   (total, item) => total + item.value,
-  //   0
-  // );
+  const approvedRequests = requests.filter((request) => {
+    const status = String(request?.action ?? "").toLowerCase();
+    return status === "approved";
+  }).length;
+  const rejectRequests = requests.filter((request) => {
+    const status = String(request?.action ?? "").toLowerCase();
+    return status === "rejected";
+  }).length;
 
   const statusData = [
     {
@@ -46,13 +50,20 @@ export default function StatusChart() {
       color: "bg-blue-500",
       textColor: "text-blue-600",
     },
-    // {
-    //   label: "Pending Approval",
-    //   value: 89,
-    //   percentage: 7,
-    //   color: "bg-purple-500",
-    //   textColor: "text-purple-600",
-    // },
+    {
+      label: "Approved",
+      value: approvedRequests,
+      percentage: getPercentOfNumber(approvedRequests, totalRequests),
+      color: "bg-purple-500",
+      textColor: "text-purple-600",
+    },
+    {
+      label: "Rejected",
+      value: rejectRequests,
+      percentage: getPercentOfNumber(rejectRequests, totalRequests),
+      color: "bg-red-500",
+      textColor: "text-red-600",
+    },
     {
       label: "Completed",
       value: completedRequests,

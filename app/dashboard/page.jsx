@@ -8,12 +8,15 @@ import CategoryChart from "../components/dashboardComponent/CategoryChart";
 import RecentRequests from "../components/dashboardComponent/RecentRequests";
 import { useGetRecentRequestQuery } from "../store/slices/requestSlice";
 import { getLoggedInUserInformation } from '../utils/helpers'
-import { ClipboardList, Clock3, LoaderCircle, CheckCircle2, } from "lucide-react";
+import { ClipboardList, Clock3, LoaderCircle, CheckCircle2, UserCheck, ThumbsDown } from "lucide-react";
 import StatusChart from "../components/dashboardComponent/StatusChart";
+import { useSelector } from "react-redux";
+import RequestDetails from "../components/requests/RequestDetails";
 
 export default function DashboardPage() {
     const { data } = useGetRecentRequestQuery(undefined);
     const requests = Array.isArray(data?.requests) ? data.requests : [];
+    const selectedData = useSelector((state) => state.requests.showSelectedRequestData)
 
     const totalRequests = requests.length;
 
@@ -30,6 +33,14 @@ export default function DashboardPage() {
     const completedRequests = requests.filter((request) => {
         const status = String(request?.status ?? "").toLowerCase();
         return status === "completed" || status === "resolved" || status === "done";
+    }).length;
+    const approvedRequests = requests.filter((request) => {
+        const status = String(request?.action ?? "").toLowerCase();
+        return status === "approved";
+    }).length;
+    const rejectRequests = requests.filter((request) => {
+        const status = String(request?.action ?? "").toLowerCase();
+        return status === "rejected";
     }).length;
 
     const stats = [
@@ -55,6 +66,20 @@ export default function DashboardPage() {
             description: "vs last month",
         },
         {
+            title: "Approved",
+            value: approvedRequests.toLocaleString(),
+            change: "+5.4%",
+            icon: UserCheck,
+            description: "vs last month",
+        },
+        {
+            title: "Reject",
+            value: rejectRequests.toLocaleString(),
+            change: "+5.4%",
+            icon: ThumbsDown,
+            description: "vs last month",
+        },
+        {
             title: "Completed",
             value: completedRequests.toLocaleString(),
             change: "+18.7%",
@@ -75,7 +100,7 @@ export default function DashboardPage() {
                     </div>
 
                     {/* Statistics */}
-                    <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 xl:grid-cols-4">
+                    <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 xl:grid-cols-6">
                         {stats.map((stat) => (
                             <StatCard
                                 key={stat.title}
@@ -92,7 +117,15 @@ export default function DashboardPage() {
                     </div>
 
                     {/* Recent Requests */}
-                    <div className="mt-6"><RecentRequests /></div>
+                    <div className="mt-6 flex transition-all duration-1000 ease-in-out">
+                        <div className="w-full "><RecentRequests /></div>
+                        {selectedData &&
+                            // <div className="overflow-hidden ml-4 w-md rounded-xl border border-slate-200 bg-white shadow-sm  px-5 py-4 ">
+                            <RequestDetails request={selectedData} />
+
+                            // </div>
+                        }
+                    </div>
                 </main>
             </div>
         </div>

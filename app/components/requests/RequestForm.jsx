@@ -8,6 +8,7 @@ import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { ArrowLeft, Loader2, Paperclip, X, } from "lucide-react";
 import { useCreateRequestMutation } from "../../store/slices/requestSlice";
+import { getLoggedInUserInformation } from "../../utils/helpers";
 
 /* Validation Schema */
 
@@ -154,7 +155,6 @@ export default function RequestForm() {
   /* =========================
      Submit
   ========================= */
-
   const onSubmit = async (data) => {
     try {
       setIsSubmitting(true);
@@ -170,7 +170,7 @@ export default function RequestForm() {
         dueDate: data.dueDate,
         status: "Pending",
         attachments: files,
-        requestedBy: "Raj Kumar",
+        requestedBy: getLoggedInUserInformation().name,
         date: new Date().toLocaleDateString("en-US", {
           month: "short",
           day: "numeric",
